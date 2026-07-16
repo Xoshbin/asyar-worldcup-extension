@@ -1,14 +1,15 @@
 {
   "id": "org.asyar.worldcup",
   "name": "World Cup",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "FIFA World Cup 2026 companion: live scores, schedule, group standings, knockout bracket, followed-team match reminders, and AI tools.",
   "author": "Asyar",
   "icon": "⚽",
   "type": "extension",
-  "asyarSdk": "^3.0.1",
-  "background": { "main": "dist/worker.js" },
-
+  "asyarSdk": "^4.3.0",
+  "background": {
+    "main": "dist/worker.js"
+  },
   "permissions": [
     "network",
     "storage:read",
@@ -18,49 +19,182 @@
     "tools:register",
     "extension:invoke"
   ],
-
   "preferences": [
-    { "name": "apiKey", "type": "textfield", "title": "API-Football API key",
-      "description": "Free key from dashboard.api-football.com (api-sports.io). Free plan allows ~100 requests/day." },
-    { "name": "season", "type": "number", "title": "Tournament season (year)", "default": 2026,
-      "description": "World Cup edition year. Note: API-Football's FREE plan only covers 2022–2024 — set 2022 (Qatar) to demo on a free key; 2026 needs a paid plan." },
-    { "name": "notifyMode", "type": "dropdown", "title": "Match reminders", "default": "team",
+    {
+      "name": "apiKey",
+      "type": "textfield",
+      "title": "API-Football API key",
+      "description": "Free key from dashboard.api-football.com (api-sports.io). Free plan allows ~100 requests/day."
+    },
+    {
+      "name": "season",
+      "type": "number",
+      "title": "Tournament season (year)",
+      "default": 2026,
+      "description": "World Cup edition year. Note: API-Football's FREE plan only covers 2022–2024 — set 2022 (Qatar) to demo on a free key; 2026 needs a paid plan."
+    },
+    {
+      "name": "notifyMode",
+      "type": "dropdown",
+      "title": "Match reminders",
+      "default": "team",
       "data": [
-        { "value": "off",  "title": "Off" },
-        { "value": "team", "title": "Only my followed team" },
-        { "value": "all",  "title": "All matches" }
+        {
+          "value": "off",
+          "title": "Off"
+        },
+        {
+          "value": "team",
+          "title": "Only my followed team"
+        },
+        {
+          "value": "all",
+          "title": "All matches"
+        }
       ]
     },
-    { "name": "notifyLeadTime", "type": "number", "title": "Remind me before kickoff (minutes)", "default": 10 },
-    { "name": "notifyGoals", "type": "checkbox", "title": "Goal alerts for my followed team", "default": true },
-    { "name": "showTray", "type": "checkbox", "title": "Show next-match countdown in tray", "default": true },
-    { "name": "timezone", "type": "textfield", "title": "Time zone (IANA, blank = system)", "default": "" }
+    {
+      "name": "notifyLeadTime",
+      "type": "number",
+      "title": "Remind me before kickoff (minutes)",
+      "default": 10
+    },
+    {
+      "name": "notifyGoals",
+      "type": "checkbox",
+      "title": "Goal alerts for my followed team",
+      "default": true
+    },
+    {
+      "name": "showTray",
+      "type": "checkbox",
+      "title": "Show next-match countdown in tray",
+      "default": true
+    },
+    {
+      "name": "timezone",
+      "type": "textfield",
+      "title": "Time zone (IANA, blank = system)",
+      "default": ""
+    }
   ],
-
   "commands": [
-    { "id": "today",    "name": "World Cup Today",     "description": "Live scores and today's matches", "icon": "⚽", "mode": "view", "component": "TodayView" },
-    { "id": "schedule", "name": "World Cup Schedule",  "description": "Full fixture list", "icon": "📅", "mode": "view", "component": "ScheduleView" },
-    { "id": "standings","name": "World Cup Standings", "description": "Group tables", "icon": "📊", "mode": "view", "component": "StandingsView" },
-    { "id": "bracket",  "name": "World Cup Bracket",   "description": "Knockout bracket", "icon": "🏆", "mode": "view", "component": "BracketView" },
-    { "id": "follow",   "name": "Follow a Team",       "description": "Pick the team you want reminders for", "icon": "⭐", "mode": "view", "component": "FollowTeamView" },
-    { "id": "tick",     "name": "World Cup Tick",      "description": "Background check that fires match reminders and goal alerts", "mode": "background", "schedule": { "intervalSeconds": 60 } }
+    {
+      "id": "today",
+      "name": "World Cup Today",
+      "description": "Live scores and today's matches",
+      "icon": "⚽",
+      "mode": "view",
+      "component": "TodayView"
+    },
+    {
+      "id": "schedule",
+      "name": "World Cup Schedule",
+      "description": "Full fixture list",
+      "icon": "📅",
+      "mode": "view",
+      "component": "ScheduleView"
+    },
+    {
+      "id": "standings",
+      "name": "World Cup Standings",
+      "description": "Group tables",
+      "icon": "📊",
+      "mode": "view",
+      "component": "StandingsView"
+    },
+    {
+      "id": "bracket",
+      "name": "World Cup Bracket",
+      "description": "Knockout bracket",
+      "icon": "🏆",
+      "mode": "view",
+      "component": "BracketView"
+    },
+    {
+      "id": "follow",
+      "name": "Follow a Team",
+      "description": "Pick the team you want reminders for",
+      "icon": "⭐",
+      "mode": "view",
+      "component": "FollowTeamView"
+    },
+    {
+      "id": "tick",
+      "name": "World Cup Tick",
+      "description": "Background check that fires match reminders and goal alerts",
+      "mode": "background",
+      "schedule": {
+        "intervalSeconds": 60
+      }
+    }
   ],
-
   "tools": [
-    { "id": "wc-matches-today", "name": "World Cup matches today",
+    {
+      "id": "wc-matches-today",
+      "name": "World Cup matches today",
       "description": "List the FIFA World Cup matches scheduled for today, with kickoff times and live scores. Call when the user asks what World Cup games are on today or right now.",
-      "parameters": { "type": "object", "properties": {} } },
-    { "id": "wc-team-fixtures", "name": "World Cup team fixtures",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "id": "wc-team-fixtures",
+      "name": "World Cup team fixtures",
       "description": "Get a team's World Cup fixtures and results. Call when the user asks when a specific country plays next or how they have done.",
-      "parameters": { "type": "object", "properties": { "team": { "type": "string", "description": "Country/team name, e.g. 'Brazil'." } }, "required": ["team"] } },
-    { "id": "wc-standings", "name": "World Cup standings",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "team": {
+            "type": "string",
+            "description": "Country/team name, e.g. 'Brazil'."
+          }
+        },
+        "required": [
+          "team"
+        ]
+      }
+    },
+    {
+      "id": "wc-standings",
+      "name": "World Cup standings",
       "description": "Get World Cup group standings. Call when the user asks about a group table or how a group is shaping up.",
-      "parameters": { "type": "object", "properties": { "group": { "type": "string", "description": "Optional group letter, e.g. 'A' or 'Group C'. Omit for all groups." } } } },
-    { "id": "wc-match-score", "name": "World Cup match score",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "group": {
+            "type": "string",
+            "description": "Optional group letter, e.g. 'A' or 'Group C'. Omit for all groups."
+          }
+        }
+      }
+    },
+    {
+      "id": "wc-match-score",
+      "name": "World Cup match score",
       "description": "Get the current score/status of a World Cup match by team name. Call when the user asks the score of a specific game.",
-      "parameters": { "type": "object", "properties": { "team": { "type": "string", "description": "A team in the match, e.g. 'England'." } }, "required": ["team"] } },
-    { "id": "wc-next-followed", "name": "Next match for followed team",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "team": {
+            "type": "string",
+            "description": "A team in the match, e.g. 'England'."
+          }
+        },
+        "required": [
+          "team"
+        ]
+      }
+    },
+    {
+      "id": "wc-next-followed",
+      "name": "Next match for followed team",
       "description": "Get the next fixture for the team the user is following in the World Cup extension. Call when the user asks 'when does my team play next'.",
-      "parameters": { "type": "object", "properties": {} } }
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    }
   ]
 }

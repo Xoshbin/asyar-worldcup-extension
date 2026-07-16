@@ -9,7 +9,7 @@ import type {
   INetworkService,
   IStorageService,
   IStatusBarService,
-  INotificationService,
+  IFeedbackService,
   IToolsService,
   ManifestTool,
   ExtensionStateProxy,
@@ -34,7 +34,7 @@ ctx.setExtensionId(extensionId);
 const network       = ctx.getService<INetworkService>('network');
 const storage       = ctx.getService<IStorageService>('storage');
 const statusBar     = ctx.getService<IStatusBarService>('statusBar');
-const notifications = ctx.getService<INotificationService>('notifications');
+const notifications = ctx.getService<IFeedbackService>('feedback');
 const tools         = ctx.getService<IToolsService>('tools');
 const state         = ctx.getService<ExtensionStateProxy>('state');
 
@@ -189,7 +189,7 @@ async function runTick(): Promise<void> {
   });
   for (const m of due) {
     alerted.add(m.id);
-    await notifications.send({
+    await notifications.sendBackground({
       title: `Kickoff soon: ${m.homeTeam?.name ?? 'TBD'} vs ${m.awayTeam?.name ?? 'TBD'}`,
       body: `${kickoffLabel(m.utcDate, timeZone())} · ${groupLabel(m.group) || statusLabel(m.status)}`,
       icon: '⚽',
@@ -201,7 +201,7 @@ async function runTick(): Promise<void> {
   // fresh data while a match is live).
   if (goalsEnabled()) {
     for (const g of detectGoals(prevMatches, matches, followed?.id ?? null)) {
-      await notifications.send({
+      await notifications.sendBackground({
         title: '⚽ GOAL!',
         body: `${g.homeName} ${g.home} – ${g.away} ${g.awayName}`,
         icon: '⚽',
