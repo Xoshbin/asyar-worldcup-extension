@@ -124,6 +124,7 @@
       "name": "World Cup Tick",
       "description": "Background check that fires match reminders and goal alerts",
       "mode": "background",
+      "searchable": false,
       "schedule": {
         "intervalSeconds": 60
       }
@@ -151,9 +152,7 @@
             "description": "Country/team name, e.g. 'Brazil'."
           }
         },
-        "required": [
-          "team"
-        ]
+        "required": ["team"]
       }
     },
     {
@@ -182,9 +181,7 @@
             "description": "A team in the match, e.g. 'England'."
           }
         },
-        "required": [
-          "team"
-        ]
+        "required": ["team"]
       }
     },
     {
