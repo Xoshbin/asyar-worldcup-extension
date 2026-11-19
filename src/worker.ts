@@ -24,9 +24,9 @@ import {
   type ApiRequest,
 } from './lib/api';
 import { isFresh, RateLimiter, type CacheEnvelope } from './lib/cache';
-import { matchesOn, matchesForTeam, sortByStage, isLive } from './lib/schedule';
+import { isLive, matchesForTeam, matchesOn, pickTrayMatch, sortByStage } from './lib/schedule';
 import { sortTable, groupLabel } from './lib/standings';
-import { scoreString, statusLabel, kickoffLabel } from './lib/format';
+import { scoreString, statusLabel, kickoffLabel, liveScoreTrayTitle } from './lib/format';
 import { matchesNeedingAlert, detectGoals } from './lib/notify';
 import type { Match, StandingGroup, Team, FollowedTeam, NotifyMode } from './lib/types';
 
@@ -156,17 +156,18 @@ async function refreshTray(matches: Match[]): Promise<void> {
   const followed = await getFollowed();
   const pool = followed ? matchesForTeam(matches, followed.id) : matches;
   const now = Date.now();
-  const next = sortByStage(pool).find((m) => Date.parse(m.utcDate) > now || isLive(m));
+  const next = pickTrayMatch(pool, now);
   const text = next
     ? isLive(next)
       ? `⚽ ${scoreString(next)}`
       : `⚽ ${kickoffLabel(next.utcDate, timeZone())}`
     : '⚽ World Cup';
+  const title = next ? liveScoreTrayTitle(next) : undefined;
   if (!trayRegistered) {
-    statusBar.registerItem({ id: TRAY_ID, icon: '⚽', text });
+    statusBar.registerItem({ id: TRAY_ID, icon: '⚽', text, title });
     trayRegistered = true;
   } else {
-    statusBar.updateItem(TRAY_ID, { text });
+    statusBar.updateItem(TRAY_ID, { text, title });
   }
 }
 

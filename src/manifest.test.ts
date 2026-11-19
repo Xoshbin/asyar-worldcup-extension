@@ -19,3 +19,9 @@ describe('manifest preferences', () => {
     expect(invalid.map((p) => `${p.name}:${p.type}`)).toEqual([]);
   });
 });
+
+describe('manifest SDK compatibility', () => {
+  it('requires the SDK version that introduced status-bar titles', () => {
+    expect(manifest.asyarSdk).toBe('^4.17.0');
+  });
+});

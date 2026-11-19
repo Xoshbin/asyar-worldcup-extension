@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { scoreString, statusLabel, kickoffLabel } from './format';
+import { scoreString, statusLabel, kickoffLabel, liveScoreTrayTitle } from './format';
 import type { Match } from './types';
 
 function m(over: Partial<Match>): Match {
@@ -25,6 +25,37 @@ describe('scoreString', () => {
     expect(scoreString(m({ homeTeam: null, awayTeam: null }))).toBe('TBD vs TBD');
     expect(scoreString(m({ homeTeam: { id: 0, name: null as unknown as string }, awayTeam: { id: 2, name: 'Spain' } })))
       .toBe('TBD vs Spain');
+  });
+});
+
+describe('liveScoreTrayTitle', () => {
+  it('formats a compact live score', () => {
+    const match = m({
+      status: 'IN_PLAY',
+      score: {
+        winner: 'HOME_TEAM',
+        fullTime: { home: 2, away: 1 },
+        halfTime: { home: 1, away: 0 },
+      },
+    });
+    expect(liveScoreTrayTitle(match)).toBe('⚽ 2–1');
+  });
+
+  it('returns undefined when the match is not live', () => {
+    expect(liveScoreTrayTitle(m({ status: 'TIMED' }))).toBeUndefined();
+  });
+
+  it('never exceeds the status-bar title limit', () => {
+    const match = m({
+      status: 'PAUSED',
+      score: {
+        winner: null,
+        fullTime: { home: 123456, away: 987654 },
+        halfTime: { home: 0, away: 0 },
+      },
+    });
+    expect([...(liveScoreTrayTitle(match) ?? '')]).toHaveLength(15);
+    expect([...(liveScoreTrayTitle(match) ?? '')].length).toBeLessThanOrEqual(32);
   });
 });
 

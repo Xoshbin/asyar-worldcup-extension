@@ -36,3 +36,11 @@ export function kickoffLabel(utcDate: string, timeZone: string): string {
   }
   return new Intl.DateTimeFormat('en-US', opts).format(new Date(utcDate));
 }
+
+export function liveScoreTrayTitle(match: Match): string | undefined {
+  if (match.status !== 'IN_PLAY' && match.status !== 'PAUSED') return undefined;
+  const home = match.score.fullTime.home;
+  const away = match.score.fullTime.away;
+  if (home === null || away === null) return undefined;
+  return `⚽ ${home}–${away}`;
+}

@@ -34,3 +34,10 @@ export function sortByStage(matches: Match[]): Match[] {
     return new Date(a.utcDate).getTime() - new Date(b.utcDate).getTime();
   });
 }
+
+export function pickTrayMatch(matches: Match[], nowMs: number): Match | undefined {
+  const byKickoff = [...matches].sort(
+    (a, b) => Date.parse(a.utcDate) - Date.parse(b.utcDate),
+  );
+  return byKickoff.find(isLive) ?? byKickoff.find((match) => Date.parse(match.utcDate) > nowMs);
+}

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { matchesOn, matchesForTeam, sortByStage, isLive, isToday } from './schedule';
+import { isLive, isToday, matchesForTeam, matchesOn, pickTrayMatch, sortByStage } from './schedule';
 import type { Match } from './types';
 
 function m(over: Partial<Match>): Match {
@@ -48,5 +48,31 @@ describe('sortByStage', () => {
       m({ id: 3, stage: 'QUARTER_FINALS' }),
     ]).map((x) => x.stage);
     expect(order).toEqual(['GROUP_STAGE', 'QUARTER_FINALS', 'FINAL']);
+  });
+});
+
+describe('pickTrayMatch', () => {
+  it('prefers a live match over an earlier-stage future fixture', () => {
+    const future = m({
+      id: 1,
+      status: 'TIMED',
+      stage: 'GROUP_STAGE',
+      utcDate: '2026-06-12T18:00:00Z',
+    });
+    const live = m({
+      id: 2,
+      status: 'IN_PLAY',
+      stage: 'SEMI_FINALS',
+      utcDate: '2026-06-11T18:00:00Z',
+    });
+
+    expect(pickTrayMatch([future, live], Date.parse('2026-06-11T19:00:00Z'))?.id).toBe(2);
+  });
+
+  it('falls back to the next future fixture when nothing is live', () => {
+    const later = m({ id: 1, utcDate: '2026-06-13T18:00:00Z' });
+    const sooner = m({ id: 2, utcDate: '2026-06-12T18:00:00Z' });
+
+    expect(pickTrayMatch([later, sooner], Date.parse('2026-06-11T19:00:00Z'))?.id).toBe(2);
   });
 });

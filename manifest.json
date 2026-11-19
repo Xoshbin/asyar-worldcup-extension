@@ -4,9 +4,9 @@
   "version": "1.0.2",
   "description": "FIFA World Cup 2026 companion: live scores, schedule, group standings, knockout bracket, followed-team match reminders, and AI tools.",
   "author": "Asyar",
-  "icon": "⚽",
+  "icon": "assets/icon.png",
   "type": "extension",
-  "asyarSdk": "^4.3.0",
+  "asyarSdk": "^4.17.0",
   "background": {
     "main": "dist/worker.js"
   },
@@ -83,7 +83,6 @@
       "id": "today",
       "name": "World Cup Today",
       "description": "Live scores and today's matches",
-      "icon": "⚽",
       "mode": "view",
       "component": "TodayView"
     },
@@ -152,7 +151,9 @@
             "description": "Country/team name, e.g. 'Brazil'."
           }
         },
-        "required": ["team"]
+        "required": [
+          "team"
+        ]
       }
     },
     {
@@ -181,7 +182,9 @@
             "description": "A team in the match, e.g. 'England'."
           }
         },
-        "required": ["team"]
+        "required": [
+          "team"
+        ]
       }
     },
     {
