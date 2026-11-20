@@ -196,5 +196,11 @@
         "properties": {}
       }
     }
+  ],
+  "category": "media",
+  "platforms": [
+    "macos",
+    "windows",
+    "linux"
   ]
 }
