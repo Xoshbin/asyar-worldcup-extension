@@ -79,3 +79,21 @@ asyar attach        # from this folder, then reload the launcher
 The data layer lives in `src/lib/api.ts` (API-Football requests + mapping into the
 internal `Match` / `Team` / `StandingGroup` types). Views and the worker consume those
 internal types, so the data source can be swapped by changing only `api.ts`.
+
+## Permissions
+
+```json
+"permissions": [
+  "network",
+  "storage:read",
+  "storage:write",
+  "notifications:send",
+  "preferences:read",
+  "tools:register",
+  "extension:invoke"
+]
+```
+
+## License
+
+[MIT](./LICENSE) © Khoshbin
