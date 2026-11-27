@@ -1,6 +1,6 @@
 {
   "name": "org.asyar.worldcup",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "FIFA World Cup 2026 companion: live scores, schedule, standings, bracket, match reminders.",
   "type": "module",
   "scripts": {

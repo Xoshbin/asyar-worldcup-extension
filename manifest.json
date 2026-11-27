@@ -1,7 +1,7 @@
 {
   "id": "org.asyar.worldcup",
   "name": "World Cup",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "FIFA World Cup 2026 companion: live scores, schedule, group standings, knockout bracket, followed-team match reminders, and AI tools.",
   "author": "Asyar",
   "icon": "assets/icon.png",
